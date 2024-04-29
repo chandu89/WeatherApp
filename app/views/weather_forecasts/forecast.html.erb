@@ -1,0 +1,9 @@
+<% if @weather_forecast %>
+  <h2>Weather Forecast</h2>
+  <p>Current temperature: <%= @weather_forecast.temperature %>°F</p>
+  <p>Minimum temperature: <%= @weather_forecast.temperature_min %>°F</p>
+  <p>Maximum temperature: <%= @weather_forecast.temperature_max %>°F</p>
+  <p>Humidity: <%= @weather_forecast.humidity %>%</p>
+  <p>Pressure: <%= @weather_forecast.pressure %> hPa</p>
+  <p>Description: <%= @weather_forecast.description %></p>
+<% end %>

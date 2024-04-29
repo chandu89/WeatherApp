@@ -1,5 +1,6 @@
 require_relative "boot"
-
+require 'faraday'
+require 'faraday_middleware'
 require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
@@ -10,6 +11,7 @@ module WeatherApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+    config.autoload_paths += %W( lib/ )
 
     # Configuration for the application, engines, and railties goes here.
     #
