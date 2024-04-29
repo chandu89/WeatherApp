@@ -22,5 +22,18 @@ RSpec.describe WeatherForecastsController, type: :controller do
       end
     end
   end
+
+  describe "GET #forecast" do
+    it "assigns the requested address to @address" do
+      address = "New York, NY"
+      get :forecast, params: { address: address }
+      expect(assigns(:address)).to eq(address)
+    end
+
+    it "renders the forecast HTML template" do
+      get :forecast
+      expect(response).to render_template(:forecast)
+    end
+  end
 end
 
