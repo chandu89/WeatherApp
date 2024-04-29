@@ -1,5 +1,5 @@
-<%= form_tag forecast_path, method: :get do %>
-  <%= label_tag :address, "Enter Address with Zip Code" %>
-  <%= text_field_tag :address %>
-  <%= submit_tag "Get Weather Forecast" %>
-<% end %>
+<form action="<%= forecast_path %>" method="get" class="weather-form">
+  <label for="address">Enter Address with Zip Code</label>
+  <input type="text" id="address" name="address" class="input-field">
+  <button type="submit" class="submit-button">Get Weather Forecast</button>
+</form>
