@@ -24,15 +24,49 @@ RSpec.describe WeatherForecastsController, type: :controller do
   end
 
   describe "GET #forecast" do
-    it "assigns the requested address to @address" do
-      address = "New York, NY"
-      get :forecast, params: { address: address }
-      expect(assigns(:address)).to eq(address)
+    context "with valid address" do
+      let(:address) { "New York, NY" }
+      let(:geocode) { Struct.new(:latitude, :longitude, :country_code, :postal_code).new(40.7128, -74.0060, "US", "10001") }
+      let(:weather_forecast) do
+        OpenStruct.new(
+          temperature: 20,
+          temperature_min: 15,
+          temperature_max: 25,
+          humidity: 50,
+          pressure: 1015,
+          description: "Sunny"
+        )
+      end
+
+      before do
+        allow(GeocodeService).to receive(:call).with(address).and_return(geocode)
+        allow(WeatherService).to receive(:call).with(geocode.latitude, geocode.longitude).and_return(weather_forecast)
+        get :forecast, params: { address: address }
+      end
+
+      it "assigns @weather_forecast" do
+        expect(assigns(:weather_forecast)).to eq(weather_forecast)
+      end
+
+      it "renders the forecast template" do
+        expect(response).to render_template(:forecast)
+      end
     end
 
-    it "renders the forecast HTML template" do
-      get :forecast
-      expect(response).to render_template(:forecast)
+    context "with invalid address" do
+      let(:address) { nil }
+
+      before do
+        get :forecast, params: { address: address }
+      end
+
+      it "does not assign @weather_forecast" do
+        expect(assigns(:weather_forecast)).to be_nil
+      end
+
+      it "sets flash alert message" do
+        expect(flash[:alert]).to be_present
+      end
     end
   end
 end
